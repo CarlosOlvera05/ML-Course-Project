@@ -218,6 +218,25 @@ search = GridSearchCV(pipe, param_grid, cv=cv, scoring="f1", return_train_score=
 search.fit(X_train, y_train, groups=groups_train)
 ```
 
+## Course topics (use techniques from class)
+
+The assignment says to "apply techniques learned in class". Algorithms from these lectures are the easiest to defend at the Q&A, so prefer them over methods we didn't cover.
+
+| # | Topic | Use in this project |
+|---|---|---|
+| 1 | Data Preprocessing | Cleaning, encoding, scaling |
+| 2 | Decision Trees | Required model |
+| 3 | Linear Regression | n/a (we're classifying) |
+| 4 | Cross Validation & Overfitting | Grouped CV, tuning curves, train vs CV gap |
+| 5 | Nearest Neighbor | Required model (KNN) |
+| 6 | Naive Bayes | Candidate extra model / baseline |
+| 7 | Evaluating Classifiers | Precision, recall, F1, PR-AUC, confusion matrix |
+| 8 | Support Vector Machines | Candidate extra model |
+| 9 | Non-linear Regression | n/a |
+| 10 | Neural Nets | Candidate extra model |
+| 12 | Ensemble Methods | Bagging, Random Forest, boosting, voting |
+| 13–14 | Clustering: K-Means, DBSCAN, Hierarchical | Optional exploration |
+
 ## Resources (from the assignment)
 - [Kaggle Learn: Feature Engineering](https://www.kaggle.com/learn/feature-engineering): mutual information, creating features, target encoding
 - [scikit-learn: Getting Started](https://scikit-learn.org/stable/getting_started.html): pipelines and cross-validation
