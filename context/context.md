@@ -82,7 +82,7 @@ The notebook needs these sections: **Introduction → Data Exploration & Preproc
 
 ## To-do list (by notebook section)
 
-Checked items were done as of Nov 3, based on commit `f312f93` ("Data Exploration and Data Cleaning are about Done"). The notebook runs cleanly.
+Checked items were reviewed on Nov 7 against commit `18dfcdb` ("added Decision Trees method"). The notebook runs cleanly. Items marked *(partial)* have been started but don't yet meet the description.
 
 ### Introduction
 - [x] Title and team names
@@ -116,19 +116,19 @@ Checked items were done as of Nov 3, based on commit `f312f93` ("Data Exploratio
 - [ ] **Markdown explaining the `dropna()` choice and its effect**: 18,647 → 4,122 rows, and the hit rate goes from 8.0% to 18.5%
 - [ ] Show the class balance *after* cleaning (762 high-sellers, 18.5%)
 - [ ] Re-align titles to the final rows: `game_titles = game_titles.loc[videogame_df.index]`
-- [ ] Parse dates: `videogame_df["release_date"] = pd.to_datetime(videogame_df["release_date"])`
+- [x] Parse dates: `videogame_df["release_date"] = pd.to_datetime(videogame_df["release_date"])` (done at the start of Part 3)
 - [ ] Sanity checks: category strings (spaces, capitalization, "Unknown") and the `critic_score` range
 - [ ] Fix the small text issues: the "Feartures" typo, and make the duplicates markdown match the output
 
 ### Part 3: Feature Engineering (20 pts, the biggest preparation item)
-- [ ] Date features: `release_year`, `release_month`, `release_quarter`, `holiday_release` (Oct–Dec); then drop raw `release_date`
+- [ ] Date features: `release_year`, `release_month`, `release_quarter`, `holiday_release` (Oct–Dec); then drop raw `release_date` *(partial: `release_year`, `release_month` done and raw date dropped; quarter and holiday flag still to do)*
 - [ ] Console features: `platform_family` (PlayStation / Xbox / Nintendo / PC / Other) and a `handheld` flag
 - [ ] `num_platforms`: how many consoles each title was released on, computed from `game_titles` (signals a big multi-platform release)
-- [ ] Publisher/developer: group rare values into "Other" (e.g. fewer than 5 games), and/or add a `publisher_game_count` frequency feature
+- [x] Publisher/developer: group rare values into "Other" (e.g. fewer than 5 games), and/or add a `publisher_game_count` frequency feature (done: publishers outside the top 50 → "Other", covering 87.9% of games; `developer` was dropped from the features)
 - [ ] Optional, from the proposal: bin `critic_score` into categories (e.g. low / mid / high)
 - [ ] Any feature that uses the **label** (e.g. a publisher's hit rate) must be computed **on training data only**; skip it if unsure
 - [ ] Show the engineered features (`.head()`) and plot at least one new feature against the label
-- [ ] Brief markdown on each feature
+- [ ] Brief markdown on each feature *(partial: markdown exists for the publisher grouping and the date split)*
 
 ### Part 4: Modeling (40 pts)
 **Setup**
@@ -140,7 +140,7 @@ Checked items were done as of Nov 3, based on commit `f312f93` ("Data Exploratio
 **Decision Tree**
 - [ ] Untuned tree, cross-validated on train
 - [ ] `GridSearchCV` over `max_depth`, `min_samples_leaf`, `criterion`, `class_weight`, using `StratifiedGroupKFold` CV (pass `groups=`) and `scoring="f1"` or `"average_precision"`
-- [ ] Plot score vs `max_depth` (train vs CV, to show overfitting) and report the best parameters
+- [ ] Plot score vs `max_depth` (train vs CV, to show overfitting) and report the best parameters *(partial: train-vs-validation accuracy curves for `max_depth` and `min_samples_leaf` exist, but they score on the test set, use a random split, and the chosen values are still "[blank]")*
 - [ ] Feature importances, or a plot of the tree's top levels
 
 **K-Nearest Neighbors**
