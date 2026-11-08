@@ -67,6 +67,8 @@ The notebook needs these sections: **Introduction → Data Exploration & Preproc
 | Nov 3 | Save `game_titles` before dropping `title` | Needed to split by game (see the data facts below) |
 | Nov 3 | Remove exact duplicate rows (11) | Redundant records |
 | Nov 3 | **Keep only complete rows (`dropna()`), leaving 4,122 games** | Keeps only records with every feature filled, especially `critic_score`. Trade-off: 78% of labeled rows are dropped, and the model applies to games that were *reviewed*. Mention this in the writeup and the Q&A |
+| Nov 7 | The current cleaning code gives **4,123 games (762 high-sellers, 18.5%)**: 21 duplicates removed, 18,901 → 4,123 rows after `dropna()`, hit rate 8.0% → 18.5% | These are the numbers the notebook prints and the markdown uses. The 1-row difference from 4,122 is not caused by dropping `developer` (keeping it also gives 4,123) |
+| Nov 7 | Part 3 features: `platform_family` (PlayStation/Xbox/Nintendo/PC/Other; Sega → Other), `handheld` (GB, GBC, GBA, DS, 3DS, PSP, PSV; Switch counts as a home console), `num_platforms` (distinct consoles per title), `release_quarter`, `holiday_release` (Oct–Dec), `critic_score_bin` (≤6 / 6–8 / >8 → 0/1/2). Still one-hot encoded with `get_dummies` | None of them uses the label, so they are safe to compute before the split. `get_dummies` was kept so the existing Part 4 cells keep running; the Part 4 setup can move the encoding into a `Pipeline` |
 
 ## Data facts (after cleaning: the data we model)
 
@@ -87,24 +89,24 @@ Checked items were reviewed on Nov 7 against commit `18dfcdb` ("added Decision T
 ### Introduction
 - [x] Title and team names
 - [x] Problem statement and target definition (≥ 1M copies; 1 = high-selling, 0 = not)
-- [ ] **Dataset description**: source (Kaggle/VGChartz link), 64,016 rows × 14 columns, one row = one game on one console, years covered
-- [ ] Tidy the headers: cell 1 has both "The Problem trying to solve" and "1. Introduction"
-- [ ] Imports cell: remove the duplicated `numpy`/`pandas`/`matplotlib` imports and add `SEED = 42` (use `random_state=SEED` everywhere)
+- [x] **Dataset description**: source (Kaggle/VGChartz link), 64,016 rows × 14 columns, one row = one game on one console, years covered
+- [x] Tidy the headers: cell 1 has both "The Problem trying to solve" and "1. Introduction"
+- [x] Imports cell: remove the duplicated `numpy`/`pandas`/`matplotlib` imports and add `SEED = 42` (use `random_state=SEED` everywhere)
 
 ### Part 1: Data Exploration
 - [x] Shape, `.info()`, `.describe()`
 - [x] Missing values table and bar chart
 - [x] Number of categories in genre, console, publisher and developer
 - [x] Class distribution bar chart
-- [ ] Finish the markdown under the class chart (currently: "The graph because it shows the 92% vs. 8% imbalance")
-- [ ] **Explore the cleaned 4,122 games against the label.** These plots can go under a new "Exploring the cleaned data" subheading at the end of Part 2.
-  - [ ] Hit rate by genre (bar chart)
-  - [ ] Hit rate by console
-  - [ ] Number of games and hit rate by release year
-  - [ ] `critic_score` vs label (box plot or histogram per class)
-  - [ ] Top publishers by game count and by hit rate
-  - [ ] How many games appear on several consoles (motivates the grouped split)
-- [ ] A 1–2 sentence interpretation under every plot
+- [x] Finish the markdown under the class chart (currently: "The graph because it shows the 92% vs. 8% imbalance")
+- [x] **Explore the cleaned 4,122 games against the label.** These plots can go under a new "Exploring the cleaned data" subheading at the end of Part 2.
+  - [x] Hit rate by genre (bar chart)
+  - [x] Hit rate by console
+  - [x] Number of games and hit rate by release year
+  - [x] `critic_score` vs label (box plot or histogram per class)
+  - [x] Top publishers by game count and by hit rate
+  - [x] How many games appear on several consoles (motivates the grouped split)
+- [x] A 1–2 sentence interpretation under every plot
 
 ### Part 2: Data Cleaning
 - [x] Create the label before dropping `total_sales`
@@ -113,22 +115,22 @@ Checked items were reviewed on Nov 7 against commit `18dfcdb` ("added Decision T
 - [x] Keep only the feature columns
 - [x] Remove duplicates (11)
 - [x] `dropna()` keeps 4,122 complete games (bar chart before/after)
-- [ ] **Markdown explaining the `dropna()` choice and its effect**: 18,647 → 4,122 rows, and the hit rate goes from 8.0% to 18.5%
-- [ ] Show the class balance *after* cleaning (762 high-sellers, 18.5%)
-- [ ] Re-align titles to the final rows: `game_titles = game_titles.loc[videogame_df.index]`
+- [x] **Markdown explaining the `dropna()` choice and its effect**: 18,647 → 4,122 rows, and the hit rate goes from 8.0% to 18.5%
+- [x] Show the class balance *after* cleaning (762 high-sellers, 18.5%)
+- [x] Re-align titles to the final rows: `game_titles = game_titles.loc[videogame_df.index]`
 - [x] Parse dates: `videogame_df["release_date"] = pd.to_datetime(videogame_df["release_date"])` (done at the start of Part 3)
-- [ ] Sanity checks: category strings (spaces, capitalization, "Unknown") and the `critic_score` range
-- [ ] Fix the small text issues: the "Feartures" typo, and make the duplicates markdown match the output
+- [x] Sanity checks: category strings (spaces, capitalization, "Unknown") and the `critic_score` range
+- [x] Fix the small text issues: the "Feartures" typo, and make the duplicates markdown match the output
 
 ### Part 3: Feature Engineering (20 pts, the biggest preparation item)
-- [ ] Date features: `release_year`, `release_month`, `release_quarter`, `holiday_release` (Oct–Dec); then drop raw `release_date` *(partial: `release_year`, `release_month` done and raw date dropped; quarter and holiday flag still to do)*
-- [ ] Console features: `platform_family` (PlayStation / Xbox / Nintendo / PC / Other) and a `handheld` flag
-- [ ] `num_platforms`: how many consoles each title was released on, computed from `game_titles` (signals a big multi-platform release)
+- [x] Date features: `release_year`, `release_month`, `release_quarter`, `holiday_release` (Oct–Dec); then drop raw `release_date`
+- [x] Console features: `platform_family` (PlayStation / Xbox / Nintendo / PC / Other) and a `handheld` flag
+- [x] `num_platforms`: how many consoles each title was released on, computed from `game_titles` (signals a big multi-platform release)
 - [x] Publisher/developer: group rare values into "Other" (e.g. fewer than 5 games), and/or add a `publisher_game_count` frequency feature (done: publishers outside the top 50 → "Other", covering 87.9% of games; `developer` was dropped from the features)
-- [ ] Optional, from the proposal: bin `critic_score` into categories (e.g. low / mid / high)
-- [ ] Any feature that uses the **label** (e.g. a publisher's hit rate) must be computed **on training data only**; skip it if unsure
-- [ ] Show the engineered features (`.head()`) and plot at least one new feature against the label
-- [ ] Brief markdown on each feature *(partial: markdown exists for the publisher grouping and the date split)*
+- [x] Optional, from the proposal: bin `critic_score` into categories (e.g. low / mid / high)
+- [x] Any feature that uses the **label** (e.g. a publisher's hit rate) must be computed **on training data only**; skip it if unsure
+- [x] Show the engineered features (`.head()`) and plot at least one new feature against the label
+- [x] Brief markdown on each feature
 
 ### Part 4: Modeling (40 pts)
 **Setup**
